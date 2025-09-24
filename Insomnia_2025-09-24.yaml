@@ -1,0 +1,131 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1758637421064
+  modified: 1758637421064
+  description: ""
+collection:
+  - name: Order Service
+    meta:
+      id: fld_09ff0ea413a9400aa5319153491a16e4
+      created: 1758638754796
+      modified: 1758638785841
+      sortKey: -1758638754796
+      description: ""
+    children:
+      - url: localhost:8080/api/orders
+        name: Create Order
+        meta:
+          id: req_5fd6f7a11928442f8108e17378101a1f
+          created: 1758637711121
+          modified: 1758689680360
+          isPrivate: false
+          description: ""
+          sortKey: -1758638771339
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"orderType":"Online",
+            	"items": [
+            		{
+            			"productName": "phone",
+            			"quantity": 1
+            		},
+            		{
+            			"productName": "case",
+            			"quantity": 1
+            		}
+            	]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/api/orders/1
+        name: Fetch Order
+        meta:
+          id: req_f7c039c8494f49eeb751f013aa6ea70f
+          created: 1758638788878
+          modified: 1758690004721
+          isPrivate: false
+          description: ""
+          sortKey: -1758638788878
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/api/orders/1/cancel
+        name: Cancel Order
+        meta:
+          id: req_2e7857e3926842d19cc1c4350f72141f
+          created: 1758688805835
+          modified: 1758689673219
+          isPrivate: false
+          description: ""
+          sortKey: -1758688805835
+        method: PUT
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/api/orders
+        name: Fetch All Orders
+        meta:
+          id: req_5dfcb578d8e3429b9bf1ccbd65c46573
+          created: 1758689008806
+          modified: 1758689669494
+          isPrivate: false
+          description: ""
+          sortKey: -1758638780108.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.6.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1758637430400
+    modified: 1758637430400
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1758637430381
+    modified: 1758637430381
+    isPrivate: false
