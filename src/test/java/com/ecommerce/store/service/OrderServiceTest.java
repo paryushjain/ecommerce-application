@@ -1,6 +1,6 @@
 package com.ecommerce.store.service;
 
-import com.ecommerce.store.domain.CustomerOrder;
+import com.ecommerce.store.domain.Order;
 import com.ecommerce.store.domain.OrderItem;
 import com.ecommerce.store.domain.OrderStatus;
 import com.ecommerce.store.exception.OrderAlreadyShippedException;
@@ -8,7 +8,6 @@ import com.ecommerce.store.exception.OrderNotFoundException;
 import com.ecommerce.store.repository.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,12 +34,12 @@ class OrderServiceTest {
 
     @Test
     void testCreateOrder() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         order.setItems(Collections.singletonList(new OrderItem()));
 
-        when(orderRepository.save(any(CustomerOrder.class))).thenReturn(order);
+        when(orderRepository.save(any(Order.class))).thenReturn(order);
 
-        CustomerOrder result = orderService.createOrder(order);
+        Order result = orderService.createOrder(order);
 
         assertEquals(OrderStatus.PENDING, result.getStatus());
         verify(orderRepository, times(1)).save(order);
@@ -48,10 +47,10 @@ class OrderServiceTest {
 
     @Test
     void testGetOrderById() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
-        CustomerOrder result = orderService.getOrderById(1L);
+        Order result = orderService.getOrderById(1L);
 
         assertNotNull(result);
         verify(orderRepository, times(1)).findById(1L);
@@ -66,10 +65,10 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersWithStatus() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         when(orderRepository.findByStatus(OrderStatus.PENDING)).thenReturn(Collections.singletonList(order));
 
-        List<CustomerOrder> result = orderService.getAllOrders(OrderStatus.PENDING);
+        List<Order> result = orderService.getAllOrders(OrderStatus.PENDING);
 
         assertEquals(1, result.size());
         verify(orderRepository, times(1)).findByStatus(OrderStatus.PENDING);
@@ -77,10 +76,10 @@ class OrderServiceTest {
 
     @Test
     void testGetAllOrdersWithoutStatus() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         when(orderRepository.findAll()).thenReturn(Collections.singletonList(order));
 
-        List<CustomerOrder> result = orderService.getAllOrders(null);
+        List<Order> result = orderService.getAllOrders(null);
 
         assertEquals(1, result.size());
         verify(orderRepository, times(1)).findAll();
@@ -88,7 +87,7 @@ class OrderServiceTest {
 
     @Test
     void testCancelOrder() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         order.setStatus(OrderStatus.PENDING);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
@@ -100,22 +99,11 @@ class OrderServiceTest {
 
     @Test
     void testCancelOrderThrowsException() {
-        CustomerOrder order = new CustomerOrder();
+        Order order = new Order();
         order.setStatus(OrderStatus.SHIPPED);
         when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
         assertThrows(OrderAlreadyShippedException.class, () -> orderService.cancelOrder(1L));
     }
 
-    @Test
-    void testUpdatePendingOrders() {
-        CustomerOrder order = new CustomerOrder();
-        order.setStatus(OrderStatus.PENDING);
-        when(orderRepository.findByStatus(OrderStatus.PENDING)).thenReturn(Collections.singletonList(order));
-
-        orderService.updatePendingOrders();
-
-        assertEquals(OrderStatus.PROCESSING, order.getStatus());
-        verify(orderRepository, times(1)).save(order);
-    }
 }

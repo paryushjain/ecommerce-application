@@ -1,6 +1,6 @@
 package com.ecommerce.store.controller;
 
-import com.ecommerce.store.domain.CustomerOrder;
+import com.ecommerce.store.domain.Order;
 import com.ecommerce.store.domain.OrderItem;
 import com.ecommerce.store.domain.OrderStatus;
 import com.ecommerce.store.service.OrderService;
@@ -8,19 +8,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(OrderController.class)
 public class OrderControllerTest {
@@ -36,8 +34,8 @@ public class OrderControllerTest {
 
     @Test
     void createOrder_ReturnsCreatedOrder() throws Exception {
-        CustomerOrder sampleOrder = createSampleOrder();
-        when(orderService.createOrder(any(CustomerOrder.class))).thenReturn(sampleOrder);
+        Order sampleOrder = createSampleOrder();
+        when(orderService.createOrder(any(Order.class))).thenReturn(sampleOrder);
 
         mockMvc.perform(post("/api/orders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -47,9 +45,9 @@ public class OrderControllerTest {
                 .andExpect(jsonPath("$.status").value("PENDING"));
     }
 
-    private CustomerOrder createSampleOrder() {
-        CustomerOrder order = CustomerOrder.builder().id(1L).status(OrderStatus.PENDING).build();
-        OrderItem item = OrderItem.builder().customerOrder(order).productName("PROD-101").quantity(1).build();
+    private Order createSampleOrder() {
+        Order order = Order.builder().id(1L).status(OrderStatus.PENDING).build();
+        OrderItem item = OrderItem.builder().order(order).productName("PROD-101").quantity(1).build();
         order.setItems(Collections.singletonList(item));
         return order;
     }

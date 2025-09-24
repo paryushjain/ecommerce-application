@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @Builder
@@ -19,9 +21,10 @@ public class OrderItem {
 
     private String productName;
     private int quantity;
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     @JsonBackReference
-    private CustomerOrder customerOrder;
+    private Order order;
 }

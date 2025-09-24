@@ -1,6 +1,6 @@
 package com.ecommerce.store.controller;
 
-import com.ecommerce.store.domain.CustomerOrder;
+import com.ecommerce.store.domain.Order;
 import com.ecommerce.store.domain.OrderStatus;
 import com.ecommerce.store.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +18,17 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<CustomerOrder> createOrder(@RequestBody CustomerOrder customerOrder) {
-        return ResponseEntity.ok(orderService.createOrder(customerOrder));
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+        return ResponseEntity.ok(orderService.createOrder(order));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerOrder> getOrderById(@PathVariable Long id) {
+    public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerOrder>> getAllOrders(@RequestParam(required = false) OrderStatus status) {
+    public ResponseEntity<List<Order>> getAllOrders(@RequestParam(required = false) OrderStatus status) {
         return ResponseEntity.ok(orderService.getAllOrders(status));
     }
 
